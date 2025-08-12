@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de requêtes de codes cadeaux</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-soft: #0b1224;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --card: #0b1224;
+            --border: #1f2942;
+            --primary: #6366f1;
+            --primary-600: #5458ee;
+            --success: #22c55e;
+            --error: #ef4444;
+            --info: #38bdf8;
+            --shadow: 0 10px 30px rgba(0,0,0,.25);
+        }
+        [data-theme="light"] {
+            --bg: #f3f4f6;
+            --bg-soft: #eef2ff;
+            --text: #0f172a;
+            --muted: #475569;
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --primary: #4f46e5;
+            --primary-600: #4338ca;
+            --success: #16a34a;
+            --error: #dc2626;
+            --info: #0ea5e9;
+            --shadow: 0 8px 24px rgba(2,6,23,.12);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            margin: 0;
+            color: var(--text);
+            background: radial-gradient(1000px 500px at 20% -10%, rgba(99,102,241,.15), transparent 50%),
+                        radial-gradient(800px 400px at 110% 0%, rgba(56,189,248,.12), transparent 40%),
+                        var(--bg);
+            padding: 0 16px 40px;
+        }
+
+        .app-header {
+            max-width: 900px;
+            margin: 28px auto 16px;
+            background: linear-gradient(135deg, rgba(99,102,241,.2), rgba(56,189,248,.2));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .title-wrap { display: flex; gap: 12px; align-items: center; }
+        .logo {
+            width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+            background: linear-gradient(135deg, var(--primary), #22c55e);
+            color: white; box-shadow: 0 6px 20px rgba(99,102,241,.35);
+        }
+        .title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .2px; }
+        .subtitle { margin: 0; font-size: 13px; color: var(--muted); }
+
+        .theme-toggle {
+            appearance: none; border: 1px solid var(--border); background: var(--card); color: var(--text);
+            padding: 8px 12px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: background .2s ease, transform .05s ease; box-shadow: var(--shadow);
+        }
+        .theme-toggle:hover { background: var(--bg-soft); }
+        .theme-toggle:active { transform: translateY(1px); }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        form label { font-weight: 600; font-size: 14px; }
+        .field { margin-top: 14px; }
+        .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: linear-gradient(0deg, var(--bg) 0%, var(--card) 100%);
+            color: var(--text);
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        textarea { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; resize: vertical; }
+        textarea:focus, input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,.25); }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 16px; border-radius: 12px; border: 1px solid transparent; cursor: pointer;
+            font-weight: 600; width: 100%; transition: transform .05s ease, filter .2s ease, background .2s ease;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-600)); color: #fff; box-shadow: 0 8px 22px rgba(79,70,229,.35); }
+        .btn-primary:hover { filter: brightness(1.05); }
+        .btn-secondary { background: var(--bg); color: var(--text); border-color: var(--border); }
+        .btn-secondary:hover { background: var(--bg-soft); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
+        .btn-danger:hover { filter: brightness(1.05); }
+
+        .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+
+        .muted { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+        .message {
+            padding: 14px;
+            margin-top: 18px;
+            background: linear-gradient(0deg, var(--bg) 0%, var(--card) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-height: 340px;
+            overflow: auto;
+        }
+        .status-success { color: var(--success); }
+        .status-error { color: var(--error); }
+        .status-info { color: var(--info); }
+        .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--border); }
+        .pill.success { background: rgba(34,197,94,.12); color: var(--success); border-color: rgba(34,197,94,.35); }
+        .pill.error { background: rgba(239,68,68,.12); color: var(--error); border-color: rgba(239,68,68,.35); }
+        .pill.info { background: rgba(56,189,248,.12); color: var(--info); border-color: rgba(56,189,248,.35); }
+
+        .hidden { display: none; }
+        .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.8); border-top-color: transparent; border-radius: 50%; display: inline-block; vertical-align: middle; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <script>window.tailwind = window.tailwind || {}; window.tailwind.config = { darkMode: 'class' };</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CryptoJS pour MD5 (même lib que l’original) -->
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
+</head>
+<body>
+
+<div class="app-header">
+    <div class="title-wrap">
+        <div class="logo" aria-hidden="true">🎁</div>
+        <div>
+            <h1 class="title">Codes cadeaux</h1>
+            <p class="subtitle">Collez vos IDs (un par ligne) et appliquez un code cadeau à la volée.</p>
+        </div>
+    </div>
+    <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Basculer le thème">
+        <span id="theme-icon">🌙</span>
+        <span style="font-size:12px">Thème</span>
+    </button>
+</div>
+
+<div class="container">
+    <form id="giftcode-form">
+        <label for="ids">Liste des ID (un par ligne ou séparés par des virgules)</label>
+        <textarea id="ids" rows="8" placeholder="Exemple:\n123456789\n987654321\n1122334455"></textarea>
+        <div id="ids-count" class="muted">0 ID détecté</div>
+        <div class="mt-2 flex items-center gap-2">
+            <button type="button" id="clip-toggle" class="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-3 py-1.5 text-sm">Activer la capture du presse‑papiers</button>
+            <span id="clip-status" class="text-xs text-slate-500">Inactif</span>
+            <button type="button" id="paste-toggle" class="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-3 py-1.5 text-sm">Mode collage (sans permission)</button>
+            <span id="paste-status" class="text-xs text-slate-500">Off</span>
+        </div>
+
+        <label for="giftcode">Code cadeau</label>
+        <input type="text" id="giftcode" placeholder="Entrez le code cadeau ici...">
+
+        <button type="submit" id="submit-btn" class="btn btn-primary inline-flex items-center justify-center w-full gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"><span id="btn-text">Envoyer la requête</span></button>
+    </form>
+
+    <div class="message" id="message"></div>
+    <div class="row">
+                <button type="button" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="saveIDs()">Sauvegarder les IDs</button>
+                <button type="button" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="loadIDs()">Charger les IDs</button>
+                <button type="button" class="btn btn-danger inline-flex items-center justify-center rounded-lg bg-red-600 hover:bg-red-500 text-white font-medium px-4 py-2" onclick="clearIDs()">Vider</button>
+    </div>
+
+        <div class="mt-4 grid gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+            <div class="flex items-center gap-2">
+                <label for="list-select" class="text-sm font-medium text-slate-800 dark:text-slate-200">Listes</label>
+                <select id="list-select" class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 p-2 text-sm"></select>
+                <button type="button" id="list-new" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Nouvelle</button>
+                <button type="button" id="list-rename" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Renommer</button>
+                <button type="button" id="list-delete" class="rounded-lg bg-red-600 hover:bg-red-500 text-white text-sm px-3 py-1.5">Supprimer</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" id="list-save" class="rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-3 py-1.5">Enregistrer (depuis le champ)</button>
+                <button type="button" id="list-load" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Charger (vers le champ)</button>
+                <button type="button" id="list-infos" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Récupérer infos</button>
+                <span id="list-status" class="text-xs text-slate-500"></span>
+            </div>
+            <div id="list-infos-view" class="hidden border-t border-slate-200 dark:border-slate-800 pt-3">
+                <div class="text-xs text-slate-500 mb-2">Infos utilisateurs (depuis /player)</div>
+                <div id="infos" class="grid gap-2"></div>
+            </div>
+        </div>
+</div>
+
+<script>
+// Reprend la méthode appendSign de l'app d'origine
+function appendSign(params) {
+    const base = Object.keys(params)
+        .sort()
+        .reduce((acc, key) => {
+            const val = typeof params[key] === 'object' ? JSON.stringify(params[key]) : params[key];
+            return acc + (acc ? '&' : '') + key + '=' + val;
+        }, '');
+    const sign = CryptoJS.MD5(base + 'mN4!pQs6JrYwV9').toString(CryptoJS.enc.Hex);
+    return { ...params, sign };
+}
+
+// Helper pour POST x-www-form-urlencoded
+async function apiPost(path, payload) {
+    const url = `https://kingshot-giftcode.centurygame.com/api${path}`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(payload).toString()
+    });
+    const json = await res.json().catch(() => ({}));
+    return { res, json };
+}
+
+// Attente utilitaire
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// POST avec retry en cas de 429/erreurs transitoires. Le payload est signé à chaque tentative.
+async function postWithRetry(path, basePayload, options = {}) {
+    const { retries = 3, baseDelay = 900, jitter = 250 } = options;
+    let attempt = 0;
+    while (true) {
+        try {
+            // Re-signer à chaque tentative avec un timestamp frais
+            const payload = appendSign({ ...basePayload, time: Date.now() });
+            const { res, json } = await apiPost(path, payload);
+            if (res && res.status === 429) {
+                if (attempt >= retries) return { res, json };
+                // Politique demandée: attendre 11 secondes fixes avant retry en cas de 429
+                await sleep(11000);
+                attempt++;
+                continue;
+            }
+            // Si pas 429, retourner tel quel
+            return { res, json };
+        } catch (err) {
+            if (attempt >= retries) throw err;
+            const wait = baseDelay * Math.pow(2, attempt) + Math.floor(Math.random() * jitter);
+            await sleep(wait);
+            attempt++;
+        }
+    }
+}
+
+// Helpers
+const idsTextarea = document.getElementById('ids');
+const idsCount = document.getElementById('ids-count');
+const submitBtn = document.getElementById('submit-btn');
+const btnText = document.getElementById('btn-text');
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+const clipToggleBtn = document.getElementById('clip-toggle');
+const clipStatus = document.getElementById('clip-status');
+const pasteToggleBtn = document.getElementById('paste-toggle');
+const pasteStatus = document.getElementById('paste-status');
+const listSelect = document.getElementById('list-select');
+const listNewBtn = document.getElementById('list-new');
+const listRenameBtn = document.getElementById('list-rename');
+const listDeleteBtn = document.getElementById('list-delete');
+const listSaveBtn = document.getElementById('list-save');
+const listLoadBtn = document.getElementById('list-load');
+const listInfosBtn = document.getElementById('list-infos');
+const listStatus = document.getElementById('list-status');
+const listInfosView = document.getElementById('list-infos-view');
+const infosDiv = document.getElementById('infos');
+
+function parseIDs(text) {
+    // Split on newlines, commas, or semicolons; trim, filter empty; deduplicate
+    const parts = text.split(/[\n\r,;]+/).map(s => s.trim()).filter(Boolean);
+    return Array.from(new Set(parts));
+}
+
+function updateIdsCount() {
+    const count = parseIDs(idsTextarea.value).length;
+    idsCount.textContent = `${count} ${count > 1 ? 'IDs détectés' : 'ID détecté'}`;
+}
+
+idsTextarea.addEventListener('input', updateIdsCount);
+
+// Capture auto du presse-papiers
+const clipboard = { enabled: false, timer: null, last: '', intervalMs: 800, focusBoostTimer: null };
+
+function extractIdsFromText(text) {
+    // Utilise le parseur existant puis filtre vers des IDs numériques raisonnables (6-15 chiffres)
+    const tokens = parseIDs(text);
+    return tokens.filter(t => /^[0-9]{6,15}$/.test(t));
+}
+
+async function readClipboardOnce() {
+    try {
+        // Essaye d’obtenir la permission si supportée
+        if (navigator.permissions && navigator.permissions.query) {
+            try { await navigator.permissions.query({ name: 'clipboard-read' }); } catch {}
+        }
+        const text = await navigator.clipboard.readText();
+        return text || '';
+    } catch {
+        return '';
+    }
+}
+
+async function pollClipboard() {
+    if (!clipboard.enabled) return;
+    const text = await readClipboardOnce();
+    if (text && text !== clipboard.last) {
+        clipboard.last = text;
+        const newIds = extractIdsFromText(text);
+        if (newIds.length) {
+            const existing = new Set(parseIDs(idsTextarea.value));
+            const uniques = newIds.filter(id => !existing.has(id));
+            if (uniques.length) {
+                const prefix = idsTextarea.value.trim().length ? '\n' : '';
+                idsTextarea.value += prefix + uniques.join('\n');
+                updateIdsCount();
+                // Petit retour visuel discret
+                clipStatus.textContent = `Capturé ${uniques.length} nouveau${uniques.length>1?'x':''}`;
+                setTimeout(() => { if (clipboard.enabled) clipStatus.textContent = 'Actif'; }, 1500);
+            }
+        }
+    }
+}
+
+function startClipboardCapture() {
+    clipboard.enabled = true;
+    clipToggleBtn.textContent = 'Désactiver la capture';
+    clipStatus.textContent = 'Actif';
+    setClipboardInterval(clipboard.intervalMs);
+    // Gestion de visibilité/focus
+    window.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('focus', onFocusGain);
+    window.addEventListener('blur', onFocusLoss);
+}
+
+function stopClipboardCapture() {
+    clipboard.enabled = false;
+    clipToggleBtn.textContent = 'Activer la capture du presse‑papiers';
+    clipStatus.textContent = 'Inactif';
+    if (clipboard.timer) { clearInterval(clipboard.timer); clipboard.timer = null; }
+    if (clipboard.focusBoostTimer) { clearTimeout(clipboard.focusBoostTimer); clipboard.focusBoostTimer = null; }
+    window.removeEventListener('visibilitychange', onVisibilityChange);
+    window.removeEventListener('focus', onFocusGain);
+    window.removeEventListener('blur', onFocusLoss);
+}
+
+clipToggleBtn.addEventListener('click', async () => {
+    if (clipboard.enabled) { stopClipboardCapture(); return; }
+    // Tentative de lecture immédiate (déclenchée par interaction utilisateur)
+    const txt = await readClipboardOnce();
+    if (!txt) {
+        clipStatus.textContent = 'Permission refusée ou vide';
+        setTimeout(() => { if (!clipboard.enabled) clipStatus.textContent = 'Inactif'; }, 15);
+        // On continue quand même: l’utilisateur recopiera et le navigateur pourra donner l’accès après
+    }
+    startClipboardCapture();
+});
+
+function setClipboardInterval(ms) {
+    if (clipboard.timer) clearInterval(clipboard.timer);
+    clipboard.timer = setInterval(pollClipboard, ms);
+}
+
+function onVisibilityChange() {
+    if (!clipboard.enabled) return;
+    if (document.hidden) {
+        // Onglet en arrière-plan: réduire la fréquence pour limiter le throttling
+        setClipboardInterval(15000);
+    } else {
+        // De retour au premier plan: lecture immédiate + boost temporaire
+        boostOnFocus();
+    }
+}
+
+function onFocusGain() {
+    if (!clipboard.enabled) return;
+    boostOnFocus();
+}
+
+function onFocusLoss() {
+    if (!clipboard.enabled) return;
+    // En perte de focus, mettre un interval plus long
+    setClipboardInterval(15000);
+}
+
+function boostOnFocus() {
+    // Lecture immédiate
+    pollClipboard();
+    // Interval rapide pendant 3s pour capter des copies en rafale au retour
+    setClipboardInterval(400);
+    if (clipboard.focusBoostTimer) clearTimeout(clipboard.focusBoostTimer);
+    clipboard.focusBoostTimer = setTimeout(() => {
+        if (!clipboard.enabled) return;
+        setClipboardInterval(clipboard.intervalMs);
+        clipboard.focusBoostTimer = null;
+    }, 3000);
+}
+
+// Mode collage (sans permission): utilise l’événement paste, aucune autorisation nécessaire
+const pasteCapture = { enabled: false };
+function onPaste(e) {
+    const text = (e && e.clipboardData && e.clipboardData.getData('text')) || '';
+    if (!text) return;
+    const newIds = extractIdsFromText(text);
+    if (!newIds.length) return;
+    const existing = new Set(parseIDs(idsTextarea.value));
+    const uniques = newIds.filter(id => !existing.has(id));
+    if (!uniques.length) return;
+    const prefix = idsTextarea.value.trim().length ? '\n' : '';
+    idsTextarea.value += prefix + uniques.join('\n');
+    updateIdsCount();
+    pasteStatus.textContent = `Ajouté ${uniques.length}`;
+    setTimeout(() => { if (pasteCapture.enabled) pasteStatus.textContent = 'On'; }, 1200);
+}
+
+function startPasteCapture() {
+    if (pasteCapture.enabled) return;
+    pasteCapture.enabled = true;
+    window.addEventListener('paste', onPaste);
+    pasteToggleBtn.textContent = 'Désactiver collage';
+    pasteStatus.textContent = 'On';
+}
+
+function stopPasteCapture() {
+    if (!pasteCapture.enabled) return;
+    pasteCapture.enabled = false;
+    window.removeEventListener('paste', onPaste);
+    pasteToggleBtn.textContent = 'Mode collage (sans permission)';
+    pasteStatus.textContent = 'Off';
+}
+
+pasteToggleBtn.addEventListener('click', () => {
+    if (pasteCapture.enabled) stopPasteCapture(); else startPasteCapture();
+});
+
+// Sauvegarder les IDs dans le localStorage
+function saveIDs() { saveCurrentListFromField(); }
+
+function loadIDs() { loadCurrentListToField(); }
+
+function clearIDs() {
+    idsTextarea.value = '';
+    updateIdsCount();
+}
+
+function setSubmitting(isSubmitting) {
+    submitBtn.disabled = isSubmitting;
+    btnText.textContent = isSubmitting ? 'Envoi en cours…' : 'Envoyer la requête';
+}
+
+// Thème (clair/sombre)
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    if (themeIcon) themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+}
+
+function initTheme() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') {
+        applyTheme(saved);
+    } else {
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        applyTheme(prefersLight ? 'light' : 'dark');
+    }
+}
+
+themeToggle?.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+});
+
+// Auto-charger les IDs sauvegardés au démarrage + thème
+window.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initLists();
+    loadCurrentListToField();
+});
+
+// Soumettre les IDs à l'API
+document.getElementById('giftcode-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const messageDiv = document.getElementById('message');
+    messageDiv.innerHTML = '';
+
+    const ids = parseIDs(idsTextarea.value);
+    const giftcode = document.getElementById('giftcode').value.trim();
+
+    if (!giftcode) {
+        messageDiv.innerHTML = '<div class="status-error">Veuillez entrer un code cadeau.</div>';
+        return;
+    }
+    if (ids.length === 0) {
+        messageDiv.innerHTML = '<div class="status-error">Aucun ID valide détecté (utilisez des virgules ou des retours à la ligne).</div>';
+        return;
+    }
+
+    setSubmitting(true);
+    messageDiv.innerHTML = `<span class="inline-block text-xs px-2 py-1 rounded-full border border-sky-300 bg-sky-50 text-sky-700 dark:border-sky-700 dark:bg-sky-900/30 dark:text-sky-300">Traitement séquentiel de ${ids.length} ID${ids.length>1?'s':''}</span>`;
+
+    let success = 0, failed = 0, already = 0, invalid = 0;
+    let abortAll = false; // arrêt global si code invalide/erroné
+    let abortLabel = '';
+    const linesArr = [];
+
+    function renderProgress() {
+        const lines = linesArr.join('');
+        messageDiv.innerHTML = `
+            <div class="flex gap-2 items-center flex-wrap">
+                <span class="inline-block text-xs px-2 py-0.5 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">${success} succès</span>
+                <span class="inline-block text-xs px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-300">${already} déjà reçu</span>
+                <span class="inline-block text-xs px-2 py-0.5 rounded-full border border-slate-300 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-800/40 dark:text-slate-300">${invalid} code invalide</span>
+                <span class="inline-block text-xs px-2 py-0.5 rounded-full border border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300">${failed} échec${failed>1?'s':''}</span>
+                ${abortAll ? `<span class=\"inline-block text-xs px-2 py-0.5 rounded-full border border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300\">Arrêt: ${abortLabel}</span>` : ''}
+            </div>
+            <div class="mt-2 grid gap-1.5">${lines}</div>
+        `;
+    }
+
+    for (const id of ids) {
+        // 1) Connexion utilisateur (séquentiel + retry 429)
+        let connectOk = false, connectJson = null, connectErr = null;
+        try {
+            // Attendre 1s avant le login pour éviter des bugs côté serveur
+            await sleep(1000);
+            const { res, json } = await postWithRetry('/player', { fid: id }, { retries: 4, baseDelay: 1000, jitter: 300 });
+            connectJson = json;
+            connectOk = !!(json && (json.success === true || json.code === 0));
+            // Si on reçoit un 429 mais pas d'erreur throw, considérer comme échec et continuer (la boucle de retry aura déjà tenté)
+            if (res && res.status === 429 && !connectOk) {
+                connectErr = new Error('429 Too Many Requests');
+            }
+        } catch (e) {
+            connectErr = e;
+        }
+
+        if (!connectOk) {
+            failed++;
+            const connectMsg = (connectJson && (connectJson.message || connectJson.msg)) || (connectErr && connectErr.message) || '';
+            const connectPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300">Connexion</span>`;
+            linesArr.push(`<div class="text-sm">${connectPill} — ID ${id}${connectMsg ? ` · ${connectMsg}` : ''}</div>`);
+            renderProgress();
+            // petit délai entre IDs pour éviter burst
+            await sleep(300);
+            continue;
+        }
+
+        // 2) Redeem code (séquentiel + retry 429)
+        let redeemOk = false, redeemJson = null, redeemErr = null, status = 'fail';
+        try {
+            // Attendre 1s avant le redeem pour éviter des bugs côté serveur
+            await sleep(1000);
+            const { res, json } = await postWithRetry('/gift_code', { fid: id, cdk: giftcode, captcha_code: '' }, { retries: 3, baseDelay: 1200, jitter: 350 });
+            redeemJson = json;
+            const msg = (json && typeof json.msg === 'string') ? json.msg.toUpperCase() : '';
+            redeemOk = !!(json && (Number(json.code) === 0 || Number(json.err_code) === 20000));
+            const alreadyReceived = !!(json && (json.err_code === 40008 || msg.includes('RECEIVED')));
+            const isInvalid = !!(json && (json.err_code === 40005 || json.err_code === 40014 || msg.includes('USED') || msg.includes('CDK NOT FOUND')));
+            if (redeemOk) { status = 'success'; success++; }
+            else if (alreadyReceived) { status = 'already'; already++; }
+            else if (isInvalid) { status = 'invalid'; invalid++; }
+            else { status = 'fail'; failed++; }
+            if (res && res.status === 429 && !redeemOk) {
+                redeemErr = new Error('429 Too Many Requests');
+            }
+        } catch (e) {
+            redeemErr = e; failed++; status = 'fail';
+        }
+
+        const connectPill = `<span class=\"inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300\">Connexion</span>`;
+        let redeemPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300">Redeem</span>`;
+        if (status === 'success') redeemPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">Redeem</span>`;
+        if (status === 'already') redeemPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Déjà reçu</span>`;
+        if (status === 'invalid') redeemPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-slate-300 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-800/40 dark:text-slate-300">Code invalide</span>`;
+        const redeemMsg = (redeemJson && (redeemJson.message || redeemJson.msg)) || (redeemErr && redeemErr.message) || '';
+        linesArr.push(`<div class="text-sm">${connectPill} ${redeemPill} — ID ${id}${redeemMsg ? ` · ${redeemMsg}` : ''}</div>`);
+        renderProgress();
+
+        // Arrêt global si le code est invalide/erroné
+        if (status === 'invalid') {
+            abortAll = true;
+            abortLabel = redeemMsg || 'code invalide/erroné';
+            break;
+        }
+
+        // délai léger pour éviter rate limit
+        await sleep(300);
+    }
+
+    setSubmitting(false);
+});
+
+// ===== Gestion des listes =====
+function uuid() { return 'list-' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+function getLists() {
+    const json = localStorage.getItem('id_lists');
+    try { return json ? JSON.parse(json) : []; } catch { return []; }
+}
+function saveLists(lists) { localStorage.setItem('id_lists', JSON.stringify(lists)); }
+function getActiveListId() { return localStorage.getItem('active_list_id'); }
+function setActiveListId(id) { localStorage.setItem('active_list_id', id); }
+
+function ensureDefaultList() {
+    let lists = getLists();
+    if (lists.length === 0) {
+        const def = { id: uuid(), name: 'Par défaut', ids: [], info: {} };
+        lists.push(def); saveLists(lists); setActiveListId(def.id);
+    }
+}
+
+function initLists() {
+    ensureDefaultList();
+    refreshListsUI();
+}
+
+function refreshListsUI() {
+    const lists = getLists();
+    const activeId = getActiveListId() || (lists[0] && lists[0].id);
+    listSelect.innerHTML = '';
+    lists.forEach(l => {
+        const opt = document.createElement('option');
+        opt.value = l.id; opt.textContent = `${l.name} (${l.ids.length})`;
+        if (l.id === activeId) opt.selected = true;
+        listSelect.appendChild(opt);
+    });
+    if (activeId) setActiveListId(activeId);
+}
+
+function currentList() {
+    const id = listSelect.value || getActiveListId();
+    const lists = getLists();
+    return lists.find(l => l.id === id);
+}
+
+function updateList(updated) {
+    const lists = getLists();
+    const idx = lists.findIndex(l => l.id === updated.id);
+    if (idx >= 0) { lists[idx] = updated; saveLists(lists); refreshListsUI(); }
+}
+
+listSelect.addEventListener('change', () => {
+    setActiveListId(listSelect.value);
+});
+
+listNewBtn.addEventListener('click', () => {
+    const name = prompt('Nom de la nouvelle liste ?', 'Nouvelle liste');
+    if (!name) return;
+    const lists = getLists();
+    const l = { id: uuid(), name, ids: [], info: {} };
+    lists.push(l); saveLists(lists); setActiveListId(l.id); refreshListsUI();
+});
+
+listRenameBtn.addEventListener('click', () => {
+    const l = currentList(); if (!l) return;
+    const name = prompt('Nouveau nom de la liste :', l.name);
+    if (!name) return;
+    l.name = name; updateList(l);
+});
+
+listDeleteBtn.addEventListener('click', () => {
+    const l = currentList(); if (!l) return;
+    if (!confirm(`Supprimer la liste "${l.name}" ?`)) return;
+    let lists = getLists();
+    lists = lists.filter(x => x.id !== l.id);
+    saveLists(lists);
+    if (lists.length) setActiveListId(lists[0].id); else localStorage.removeItem('active_list_id');
+    ensureDefaultList(); refreshListsUI();
+});
+
+function saveCurrentListFromField() {
+    const l = currentList(); if (!l) return;
+    const ids = parseIDs(idsTextarea.value);
+    l.ids = ids; l.info = l.info || {};
+    updateList(l);
+    listStatus.textContent = `Sauvegardé (${ids.length} IDs)`;
+    setTimeout(() => { listStatus.textContent = ''; }, 1500);
+}
+
+function loadCurrentListToField() {
+    const l = currentList(); if (!l) return;
+    idsTextarea.value = (l.ids || []).join('\n');
+    updateIdsCount();
+    listStatus.textContent = `Chargé (${l.ids.length} IDs)`;
+    setTimeout(() => { listStatus.textContent = ''; }, 1500);
+}
+
+listSaveBtn.addEventListener('click', saveCurrentListFromField);
+listLoadBtn.addEventListener('click', loadCurrentListToField);
+
+// Récupération des infos via /player et affichage
+listInfosBtn.addEventListener('click', async () => {
+    const l = currentList(); if (!l) return;
+    const ids = parseIDs(idsTextarea.value);
+    if (!ids.length) { listStatus.textContent = 'Aucun ID'; setTimeout(() => listStatus.textContent = '', 1200); return; }
+    listStatus.textContent = `Récupération 0/${ids.length}…`;
+
+    // Séquentiel avec cooldown et retry 429
+    const items = [];
+    l.info = l.info || {};
+    let i = 0;
+    for (const fid of ids) {
+        try {
+            // Cooldown d'1s avant chaque requête /player
+            await sleep(1000);
+            const { json } = await postWithRetry('/player', { fid }, { retries: 4, baseDelay: 1000, jitter: 300 });
+            if (json && (json.success === true || json.code === 0) && json.data) {
+                l.info[fid] = json.data;
+                items.push({ fid, ok: true, data: json.data });
+            }
+        } catch {}
+        i++;
+        listStatus.textContent = `Récupération ${i}/${ids.length}…`;
+    }
+    updateList(l);
+
+    if (items.length) {
+        listInfosView.classList.remove('hidden');
+        infosDiv.innerHTML = items.map(({ fid, data }) => {
+            const img = data.avatar_image || '';
+            return `
+            <div class="flex items-center gap-3 p-2 rounded-lg border border-slate-200 dark:border-slate-800">
+              <img src="${img}" alt="avatar" class="w-8 h-8 rounded-full object-cover" onerror="this.style.display='none'" />
+              <div class="flex-1 text-sm text-slate-800 dark:text-slate-200">
+                <div class="font-semibold">${data.nickname || '—'} <span class="text-xs text-slate-500">(ID ${fid})</span></div>
+                <div class="text-xs text-slate-600 dark:text-slate-400">Serveur: ${data.kid ?? '—'} · Niveau poêle: ${data.stove_lv ?? '—'} · Recharges: ${data.total_recharge_amount ?? '—'}</div>
+              </div>
+            </div>`;
+        }).join('');
+    } else {
+        infosDiv.innerHTML = '<div class="text-xs text-slate-500">Aucune info récupérée.</div>';
+        listInfosView.classList.remove('hidden');
+    }
+
+    listStatus.textContent = `Infos mises à jour (${items.length}/${ids.length})`;
+    setTimeout(() => { listStatus.textContent = ''; }, 1500);
+});
+</script>
+
+</body>
+</html>
