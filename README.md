@@ -1,4 +1,3 @@
-````markdown
 # Kingshot Redeem Code – Batch gift code sender ✨
 
 > Language: English (default) · Version française: [README.fr.md](./README.fr.md)
@@ -102,4 +101,3 @@ The UI auto‑switches between French and English based on your browser (FR/EN).
 ## License
 No license provided yet.
 - No build required. Just open `index.html`.
-````
