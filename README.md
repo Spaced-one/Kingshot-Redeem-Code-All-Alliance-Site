@@ -1,103 +1,42 @@
-# Kingshot Redeem Code – Outil d’envoi de codes cadeau par lots ✨
-
-> Langue: Français (auto) · English version: [README.en.md](./README.en.md)
-
-Ce dépôt contient une application web (une seule page `index.html`) qui permet d’appliquer un code cadeau à de nombreux IDs de joueurs (p. ex. une alliance) pour le jeu Kingshot. L’outil se charge de se « connecter » pour chaque ID, puis d’exécuter le redeem un par un, en respectant les limites du serveur.
-
-> [!NOTE]
-> Cette application est 100% côté navigateur (pas de backend). Elle signe les requêtes comme le client officiel et envoie en `application/x-www-form-urlencoded`.
-
-Si vous tombez sur ce repo sans contexte: cet outil sert à automatiser, côté navigateur, l’application d’un même code cadeau à une liste d’IDs numériques du jeu Kingshot, sans serveur ni installation.
-
-## Pour qui ? 👥
-- Responsables d’alliance ou joueurs souhaitant appliquer un code à plusieurs comptes.
-- Utilisateurs qui ont une liste d’IDs et un code cadeau à distribuer.
-
-## Ce que fait l’outil 🔧
-- Colle et nettoie des listes d’IDs (lignes/virgules/points‑virgules, déduplication).
-- Se connecte à chaque ID (endpoint `/player`) puis appelle le redeem (`/gift_code`).
-- Traite les IDs en séquence, avec des pauses et des retries pour éviter les limites.
-- Affiche un résumé clair: succès, déjà reçu, codes invalides, échecs.
-- Gère des listes locales (créer/renommer/supprimer/enregistrer/charger), avec récupération d’infos joueur.
-- Inclus par défaut 2 listes d’exemple: « Alliance FARM » et « APX Alliance » (stockées localement si aucune liste n’existe encore).
-
-## Prérequis ✅
-- Un navigateur moderne (Chrome, Edge, Firefox, Safari).
-- Un code cadeau valide (texte).
-- Une liste d’IDs numériques (copiée depuis vos sources habituelles).
-
-## Démarrage rapide 🚀
-1) Téléchargez/clonez le dépôt, puis ouvrez `index.html` dans votre navigateur.
-2) Collez vos IDs dans le champ (un par ligne ou séparés par des virgules/;).
-3) Saisissez le code cadeau.
-4) Cliquez « Envoyer la requête ». Le script va:
-   - Attendre 1 seconde, se connecter à l’ID (`/player`) avec signature.
-   - Attendre à nouveau 1 seconde, tenter le redeem (`/gift_code`).
-  - En cas de 429, attendre 11 secondes puis réessayer (nombre de tentatives limité).
-   - S’arrêter si le code est invalidé (USED/CDK NOT FOUND) pour ne pas continuer inutilement.
-
-> [!TIP]
-> Vous pouvez activer la capture du presse‑papiers ou le mode « collage » pour ajouter automatiquement des IDs que vous copiez.
-
-## Fonctionnement (vue d’ensemble) 🧠
-- Signature: concaténation triée des paires `key=value`, MD5 avec sel `mN4!pQs6JrYwV9` via CryptoJS; envoi en `application/x-www-form-urlencoded`.
-- Flux submit: séquentiel strict par ID; pauses de 1s avant login et 1s avant redeem; retry 429 avec attente fixe de 11s.
-- États redeem détectés:
-  - Succès: `code = 0` ou `err_code = 20000` (`SUCCESS`).
-  - Déjà reçu: `err_code = 40008` ou `msg` contient `RECEIVED`.
-  - Invalide/erroné: `err_code ∈ {40005 (USED.), 40014 (CDK NOT FOUND.)}` (arrêt immédiat du traitement).
-  - Échec: autres erreurs/réseau.
-- Récupération d’infos: bouton dédié, séquentiel avec pause de 1s et retry 429; affichage avatar/pseudo/serveur/niveau/recharges.
-
-> [!IMPORTANT]
-> En cas de code invalide/erroné, le traitement s’arrête tout de suite pour éviter de lancer des requêtes inutiles sur les IDs suivants.
-
-## Dépannage rapide 🧰
-
-> [!WARNING]
-> 429 Too Many Requests: l’outil attend 11s puis retente automatiquement (quelques essais). Le traitement est plus lent mais évite les blocages.
-
-> [!NOTE]
-> Onglet en arrière‑plan: le navigateur peut ralentir les timers. L’outil adapte la fréquence et effectue un boost à votre retour.
-
-> [!TIP]
-> Presse‑papiers: si l’accès est refusé, utilisez le mode « collage » (sans permission).
-
-> [!NOTE]
-> CORS/réseau: l’outil appelle un domaine tiers; son fonctionnement dépend des en‑têtes du serveur et de votre réseau.
-
-## Exécution locale (optionnel) 🖥️
-Il n’y a pas de build. Ouvrez `index.html` directement ou servez‑le via un mini‑serveur pour éviter certains blocages.
-
-```bash
-# Python 3
-python3 -m http.server 8000
-
-# Node (via npx) — optionnel
-# npx serve .
-```
-
-Puis visitez http://localhost:8000 et ouvrez `index.html`.
-
-## Confidentialité et limites 🔐
-- Aucune donnée n’est envoyée à un serveur de ce dépôt. Les listes/infos restent dans votre navigateur (localStorage).
-- Les requêtes partent de votre navigateur vers `kingshot-giftcode.centurygame.com`.
-> [!CAUTION]
-> Respectez les conditions d’utilisation du jeu. Utilisez ce script à vos risques.
-
-## FAQ ❓
-• Où trouver les IDs ?
-> Selon votre organisation (alliances, exports, captures…). L’outil accepte chiffres sur 1 ligne chacun ou séparés par virgules/;.
-
-• Puis‑je modifier les listes par défaut ?
-> Oui. Créez/renommez/supprimez vos listes. Elles sont stockées en local.
-
-• Pourquoi c’est lent ?
-> Le traitement est volontairement séquentiel avec pauses et retry (11s sur 429) pour éviter les blocages serveurs.
-
-## Langues 🌐
-L’interface bascule automatiquement en français ou en anglais selon la langue de votre navigateur (FR/EN). Les messages réseau restent renvoyés par le serveur.
-
-## Licence
-Pas de licence fournie pour l’instant.
-- Aucun build requis. Ouvrez simplement `index.html`.
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Kingshot Redeem Code – README</title>
+	<style>
+		body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 24px; line-height: 1.5; }
+		.card { max-width: 900px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; }
+		.row { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+		.muted { color: #6b7280; font-size: 12px; }
+		.btn { appearance: none; border: 1px solid #e5e7eb; background: #fff; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+		iframe { width: 100%; height: 70vh; border: 1px solid #e5e7eb; border-radius: 8px; }
+	</style>
+	<script>
+		function detectLang(){
+			const nav = (navigator.language || navigator.userLanguage || 'fr').toLowerCase();
+			return nav.startsWith('en') ? 'en' : 'fr';
+		}
+		function setDoc(lang){
+			const src = lang === 'en' ? 'README.en.md' : 'README.fr.md';
+			document.getElementById('doc').src = src;
+			document.getElementById('label').textContent = lang === 'en' ? 'Language: English' : 'Langue : Français';
+			document.getElementById('toggle').textContent = lang === 'en' ? 'Voir en Français' : 'View in English';
+			window.__lang = lang;
+		}
+		function toggle(){ setDoc(window.__lang === 'en' ? 'fr' : 'en'); }
+		window.addEventListener('DOMContentLoaded', function(){ setDoc(detectLang()); });
+	</script>
+</head>
+<body>
+	<div class="card">
+		<div class="row">
+			<div id="label" class="muted">Langue : Français</div>
+			<button id="toggle" class="btn" onclick="toggle()">View in English</button>
+		</div>
+		<div style="margin-top:10px">
+			<iframe id="doc" src="README.fr.md" title="README"></iframe>
+		</div>
+	</div>
+</body>
+</html>
