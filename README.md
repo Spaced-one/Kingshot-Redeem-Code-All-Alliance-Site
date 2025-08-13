@@ -2,7 +2,7 @@
 
 > Language: English (default) · Version française: [README.fr.md](./README.fr.md)
 
-> Live site: https://spaced-one.github.io/KingshotRedeemCodeAllAllianceSite/
+> Live site: https://spaced-one.github.io/Kingshot-Redeem-Code-All-Alliance-Site/
 
 This repo contains a single‑page web app (`index.html`) to apply one gift code to many player IDs (e.g., an alliance) for the game Kingshot. The tool signs and sends requests like the official client and executes them one by one within server limits.
 
