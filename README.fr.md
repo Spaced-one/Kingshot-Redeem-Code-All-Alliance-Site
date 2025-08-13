@@ -2,6 +2,8 @@
 
 > Langue: Français (auto) · English version: [README.en.md](./README.en.md)
 
+> Site en ligne: https://spaced-one.github.io/KingshotRedeemCodeAllAllianceSite/
+
 Ce dépôt contient une application web (une seule page `index.html`) qui permet d’appliquer un code cadeau à de nombreux IDs de joueurs (p. ex. une alliance) pour le jeu Kingshot. L’outil se charge de se « connecter » pour chaque ID, puis d’exécuter le redeem un par un, en respectant les limites du serveur.
 
 > [!NOTE]
