@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Kingshot Redeem Code – README</title>
+	<style>
+		body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 24px; line-height: 1.5; }
+		.card { max-width: 900px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; }
+		.row { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+		.muted { color: #6b7280; font-size: 12px; }
+		.btn { appearance: none; border: 1px solid #e5e7eb; background: #fff; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+		iframe { width: 100%; height: 70vh; border: 1px solid #e5e7eb; border-radius: 8px; }
+	</style>
+	<script>
+		function detectLang(){
+			const nav = (navigator.language || navigator.userLanguage || 'fr').toLowerCase();
+			return nav.startsWith('en') ? 'en' : 'fr';
+		}
+		function setDoc(lang){
+			const src = lang === 'en' ? 'README.en.md' : 'README.md';
+			document.getElementById('doc').src = src;
+			document.getElementById('label').textContent = lang === 'en' ? 'Language: English' : 'Langue : Français';
+			document.getElementById('toggle').textContent = lang === 'en' ? 'Voir en Français' : 'View in English';
+			window.__lang = lang;
+		}
+		function toggle(){ setDoc(window.__lang === 'en' ? 'fr' : 'en'); }
+		window.addEventListener('DOMContentLoaded', function(){ setDoc(detectLang()); });
+	</script>
+</head>
+<body>
+	<div class="card">
+		<div class="row">
+			<div id="label" class="muted">Langue : Français</div>
+			<button id="toggle" class="btn" onclick="toggle()">View in English</button>
+		</div>
+		<div style="margin-top:10px">
+			<iframe id="doc" src="README.md" title="README"></iframe>
+		</div>
+	</div>
+</body>
+</html>

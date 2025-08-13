@@ -1,5 +1,7 @@
 # Kingshot Redeem Code – Outil d’envoi de codes cadeau par lots ✨
 
+> Langue: Français (auto) · English version: [README.en.md](./README.en.md)
+
 Ce dépôt contient une application web (une seule page `index.html`) qui permet d’appliquer un code cadeau à de nombreux IDs de joueurs (p. ex. une alliance) pour le jeu Kingshot. L’outil se charge de se « connecter » pour chaque ID, puis d’exécuter le redeem un par un, en respectant les limites du serveur.
 
 > [!NOTE]
@@ -71,8 +73,8 @@ Il n’y a pas de build. Ouvrez `index.html` directement ou servez‑le via un m
 # Python 3
 python3 -m http.server 8000
 
-# Node (via npx)
-
+# Node (via npx) — optionnel
+# npx serve .
 ```
 
 Puis visitez http://localhost:8000 et ouvrez `index.html`.
@@ -92,6 +94,9 @@ Puis visitez http://localhost:8000 et ouvrez `index.html`.
 
 • Pourquoi c’est lent ?
 > Le traitement est volontairement séquentiel avec pauses et retry (11s sur 429) pour éviter les blocages serveurs.
+
+## Langues 🌐
+L’interface bascule automatiquement en français ou en anglais selon la langue de votre navigateur (FR/EN). Les messages réseau restent renvoyés par le serveur.
 
 ## Licence
 Pas de licence fournie pour l’instant.

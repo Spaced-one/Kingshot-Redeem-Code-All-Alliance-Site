@@ -153,19 +153,19 @@
     <div class="title-wrap">
         <div class="logo" aria-hidden="true">🎁</div>
         <div>
-            <h1 class="title">Codes cadeaux</h1>
-            <p class="subtitle">Collez vos IDs (un par ligne) et appliquez un code cadeau à la volée.</p>
+            <h1 class="title" id="app-title">Codes cadeaux</h1>
+            <p class="subtitle" id="subtitle">Collez vos IDs (un par ligne) et appliquez un code cadeau à la volée.</p>
         </div>
     </div>
     <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Basculer le thème">
         <span id="theme-icon">🌙</span>
-        <span style="font-size:12px">Thème</span>
+                <span id="theme-label" style="font-size:12px">Thème</span>
     </button>
 </div>
 
 <div class="container">
     <form id="giftcode-form">
-        <label for="ids">Liste des ID (un par ligne ou séparés par des virgules)</label>
+        <label for="ids" id="label-ids">Liste des ID (un par ligne ou séparés par des virgules)</label>
         <textarea id="ids" rows="8" placeholder="Exemple:\n123456789\n987654321\n1122334455"></textarea>
         <div id="ids-count" class="muted">0 ID détecté</div>
         <div class="mt-2 flex items-center gap-2">
@@ -175,22 +175,22 @@
             <span id="paste-status" class="text-xs text-slate-500">Off</span>
         </div>
 
-        <label for="giftcode">Code cadeau</label>
-        <input type="text" id="giftcode" placeholder="Entrez le code cadeau ici...">
+    <label for="giftcode" id="label-giftcode">Code cadeau</label>
+    <input type="text" id="giftcode" placeholder="Entrez le code cadeau ici...">
 
         <button type="submit" id="submit-btn" class="btn btn-primary inline-flex items-center justify-center w-full gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"><span id="btn-text">Envoyer la requête</span></button>
     </form>
 
     <div class="message" id="message"></div>
     <div class="row">
-                <button type="button" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="saveIDs()">Sauvegarder les IDs</button>
-                <button type="button" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="loadIDs()">Charger les IDs</button>
-                <button type="button" class="btn btn-danger inline-flex items-center justify-center rounded-lg bg-red-600 hover:bg-red-500 text-white font-medium px-4 py-2" onclick="clearIDs()">Vider</button>
+        <button type="button" id="btn-save" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="saveIDs()">Sauvegarder les IDs</button>
+        <button type="button" id="btn-load" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="loadIDs()">Charger les IDs</button>
+        <button type="button" id="btn-clear" class="btn btn-danger inline-flex items-center justify-center rounded-lg bg-red-600 hover:bg-red-500 text-white font-medium px-4 py-2" onclick="clearIDs()">Vider</button>
     </div>
 
         <div class="mt-4 grid gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <div class="flex items-center gap-2">
-                <label for="list-select" class="text-sm font-medium text-slate-800 dark:text-slate-200">Listes</label>
+                <label for="list-select" id="lists-label" class="text-sm font-medium text-slate-800 dark:text-slate-200">Listes</label>
                 <select id="list-select" class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 p-2 text-sm"></select>
                 <button type="button" id="list-new" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Nouvelle</button>
                 <button type="button" id="list-rename" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Renommer</button>
@@ -203,7 +203,7 @@
                 <span id="list-status" class="text-xs text-slate-500"></span>
             </div>
             <div id="list-infos-view" class="hidden border-t border-slate-200 dark:border-slate-800 pt-3">
-                <div class="text-xs text-slate-500 mb-2">Infos utilisateurs (depuis /player)</div>
+                <div id="label-infos-title" class="text-xs text-slate-500 mb-2">Infos utilisateurs (depuis /player)</div>
                 <div id="infos" class="grid gap-2"></div>
             </div>
         </div>
@@ -271,6 +271,11 @@ const submitBtn = document.getElementById('submit-btn');
 const btnText = document.getElementById('btn-text');
 const themeToggle = document.getElementById('theme-toggle');
 const themeIcon = document.getElementById('theme-icon');
+const themeLabel = document.getElementById('theme-label');
+const appTitle = document.getElementById('app-title');
+const subtitle = document.getElementById('subtitle');
+const labelIds = document.getElementById('label-ids');
+const labelGift = document.getElementById('label-giftcode');
 const clipToggleBtn = document.getElementById('clip-toggle');
 const clipStatus = document.getElementById('clip-status');
 const pasteToggleBtn = document.getElementById('paste-toggle');
@@ -294,7 +299,10 @@ function parseIDs(text) {
 
 function updateIdsCount() {
     const count = parseIDs(idsTextarea.value).length;
-    idsCount.textContent = `${count} ${count > 1 ? 'IDs détectés' : 'ID détecté'}`;
+    const L = window.__i18nLang || 'fr';
+    idsCount.textContent = L === 'en'
+        ? `${count} ${count > 1 ? 'IDs detected' : 'ID detected'}`
+        : `${count} ${count > 1 ? 'IDs détectés' : 'ID détecté'}`;
 }
 
 idsTextarea.addEventListener('input', updateIdsCount);
@@ -311,9 +319,7 @@ function extractIdsFromText(text) {
 async function readClipboardOnce() {
     try {
         // Essaye d’obtenir la permission si supportée
-        if (navigator.permissions && navigator.permissions.query) {
-            try { await navigator.permissions.query({ name: 'clipboard-read' }); } catch {}
-        }
+        try { if (navigator.permissions?.query) { await navigator.permissions.query({ name: 'clipboard-read' }); } } catch {}
         const text = await navigator.clipboard.readText();
         return text || '';
     } catch {
@@ -321,6 +327,7 @@ async function readClipboardOnce() {
     }
 }
 
+// Sonde le presse‑papiers périodiquement et ajoute les nouveaux IDs détectés
 async function pollClipboard() {
     if (!clipboard.enabled) return;
     const text = await readClipboardOnce();
@@ -344,8 +351,9 @@ async function pollClipboard() {
 
 function startClipboardCapture() {
     clipboard.enabled = true;
-    clipToggleBtn.textContent = 'Désactiver la capture';
-    clipStatus.textContent = 'Actif';
+    const L = window.__i18nLang || 'fr';
+    clipToggleBtn.textContent = L === 'en' ? 'Disable capture' : 'Désactiver la capture';
+    clipStatus.textContent = L === 'en' ? 'Active' : 'Actif';
     setClipboardInterval(clipboard.intervalMs);
     // Gestion de visibilité/focus
     window.addEventListener('visibilitychange', onVisibilityChange);
@@ -355,8 +363,9 @@ function startClipboardCapture() {
 
 function stopClipboardCapture() {
     clipboard.enabled = false;
-    clipToggleBtn.textContent = 'Activer la capture du presse‑papiers';
-    clipStatus.textContent = 'Inactif';
+    const L = window.__i18nLang || 'fr';
+    clipToggleBtn.textContent = L === 'en' ? 'Enable clipboard capture' : 'Activer la capture du presse‑papiers';
+    clipStatus.textContent = L === 'en' ? 'Inactive' : 'Inactif';
     if (clipboard.timer) { clearInterval(clipboard.timer); clipboard.timer = null; }
     if (clipboard.focusBoostTimer) { clearTimeout(clipboard.focusBoostTimer); clipboard.focusBoostTimer = null; }
     window.removeEventListener('visibilitychange', onVisibilityChange);
@@ -369,8 +378,9 @@ clipToggleBtn.addEventListener('click', async () => {
     // Tentative de lecture immédiate (déclenchée par interaction utilisateur)
     const txt = await readClipboardOnce();
     if (!txt) {
-        clipStatus.textContent = 'Permission refusée ou vide';
-        setTimeout(() => { if (!clipboard.enabled) clipStatus.textContent = 'Inactif'; }, 15);
+        const L = window.__i18nLang || 'fr';
+        clipStatus.textContent = L === 'en' ? 'Permission denied or empty' : 'Permission refusée ou vide';
+        setTimeout(() => { if (!clipboard.enabled) clipStatus.textContent = (L === 'en' ? 'Inactive' : 'Inactif'); }, 1500);
         // On continue quand même: l’utilisateur recopiera et le navigateur pourra donner l’accès après
     }
     startClipboardCapture();
@@ -429,24 +439,27 @@ function onPaste(e) {
     const prefix = idsTextarea.value.trim().length ? '\n' : '';
     idsTextarea.value += prefix + uniques.join('\n');
     updateIdsCount();
-    pasteStatus.textContent = `Ajouté ${uniques.length}`;
-    setTimeout(() => { if (pasteCapture.enabled) pasteStatus.textContent = 'On'; }, 1200);
+    const L = window.__i18nLang || 'fr';
+    pasteStatus.textContent = L === 'en' ? `Added ${uniques.length}` : `Ajouté ${uniques.length}`;
+    setTimeout(() => { if (pasteCapture.enabled) pasteStatus.textContent = (L === 'en' ? 'On' : 'On'); }, 1200);
 }
 
 function startPasteCapture() {
     if (pasteCapture.enabled) return;
     pasteCapture.enabled = true;
     window.addEventListener('paste', onPaste);
-    pasteToggleBtn.textContent = 'Désactiver collage';
-    pasteStatus.textContent = 'On';
+    const L = window.__i18nLang || 'fr';
+    pasteToggleBtn.textContent = L === 'en' ? 'Disable paste mode' : 'Désactiver collage';
+    pasteStatus.textContent = L === 'en' ? 'On' : 'On';
 }
 
 function stopPasteCapture() {
     if (!pasteCapture.enabled) return;
     pasteCapture.enabled = false;
     window.removeEventListener('paste', onPaste);
-    pasteToggleBtn.textContent = 'Mode collage (sans permission)';
-    pasteStatus.textContent = 'Off';
+    const L = window.__i18nLang || 'fr';
+    pasteToggleBtn.textContent = L === 'en' ? 'Paste mode (no permission)' : 'Mode collage (sans permission)';
+    pasteStatus.textContent = L === 'en' ? 'Off' : 'Off';
 }
 
 pasteToggleBtn.addEventListener('click', () => {
@@ -465,7 +478,10 @@ function clearIDs() {
 
 function setSubmitting(isSubmitting) {
     submitBtn.disabled = isSubmitting;
-    btnText.textContent = isSubmitting ? 'Envoi en cours…' : 'Envoyer la requête';
+    const L = window.__i18nLang || 'fr';
+    btnText.textContent = isSubmitting
+        ? (L === 'en' ? 'Sending…' : 'Envoi en cours…')
+        : (L === 'en' ? 'Send request' : 'Envoyer la requête');
 }
 
 // Thème (clair/sombre)
@@ -493,9 +509,79 @@ themeToggle?.addEventListener('click', () => {
 // Auto-charger les IDs sauvegardés au démarrage + thème
 window.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initI18n();
     initLists();
     loadCurrentListToField();
 });
+// ===== i18n simple FR/EN =====
+function detectLang() {
+    const nav = (navigator.language || navigator.userLanguage || 'fr').toLowerCase();
+    return nav.startsWith('en') ? 'en' : 'en';
+}
+
+function initI18n() {
+    window.__i18nLang = detectLang();
+    applyI18n();
+}
+
+function applyI18n() {
+    const L = window.__i18nLang || 'fr';
+    // En-tête
+    if (appTitle) appTitle.textContent = L === 'en' ? 'Gift code tool' : 'Codes cadeaux';
+    if (subtitle) subtitle.textContent = L === 'en'
+        ? 'Paste your IDs (one per line) and redeem a gift code on the fly.'
+        : 'Collez vos IDs (un par ligne) et appliquez un code cadeau à la volée.';
+    if (themeLabel) themeLabel.textContent = L === 'en' ? 'Theme' : 'Thème';
+
+    // Champs
+    if (labelIds) labelIds.textContent = L === 'en'
+        ? 'ID list (one per line or separated by commas)'
+        : 'Liste des ID (un par ligne ou séparés par des virgules)';
+    if (labelGift) labelGift.textContent = L === 'en' ? 'Gift code' : 'Code cadeau';
+    const giftInput = document.getElementById('giftcode');
+    if (giftInput) giftInput.placeholder = L === 'en' ? 'Enter the gift code here...' : 'Entrez le code cadeau ici...';
+
+    // Boutons clipboard
+    if (clipToggleBtn) clipToggleBtn.textContent = clipboard.enabled
+        ? (L === 'en' ? 'Disable capture' : 'Désactiver la capture')
+        : (L === 'en' ? 'Enable clipboard capture' : 'Activer la capture du presse‑papiers');
+    if (clipStatus) clipStatus.textContent = clipboard.enabled
+        ? (L === 'en' ? 'Active' : 'Actif')
+        : (L === 'en' ? 'Inactive' : 'Inactif');
+    if (pasteToggleBtn) pasteToggleBtn.textContent = pasteCapture.enabled
+        ? (L === 'en' ? 'Disable paste mode' : 'Désactiver collage')
+        : (L === 'en' ? 'Paste mode (no permission)' : 'Mode collage (sans permission)');
+    if (pasteStatus) pasteStatus.textContent = pasteCapture.enabled ? (L === 'en' ? 'On' : 'On') : (L === 'en' ? 'Off' : 'Off');
+
+    // Boutons principaux
+    const btnSave = document.getElementById('btn-save');
+    const btnLoad = document.getElementById('btn-load');
+    const btnClear = document.getElementById('btn-clear');
+    if (btnSave) btnSave.textContent = L === 'en' ? 'Save IDs' : 'Sauvegarder les IDs';
+    if (btnLoad) btnLoad.textContent = L === 'en' ? 'Load IDs' : 'Charger les IDs';
+    if (btnClear) btnClear.textContent = L === 'en' ? 'Clear' : 'Vider';
+
+    const listsLabel = document.getElementById('lists-label');
+    if (listsLabel) listsLabel.textContent = L === 'en' ? 'Lists' : 'Listes';
+    const listNew = document.getElementById('list-new');
+    const listRename = document.getElementById('list-rename');
+    const listDelete = document.getElementById('list-delete');
+    const listSave = document.getElementById('list-save');
+    const listLoad = document.getElementById('list-load');
+    const listInfos = document.getElementById('list-infos');
+    if (listNew) listNew.textContent = L === 'en' ? 'New' : 'Nouvelle';
+    if (listRename) listRename.textContent = L === 'en' ? 'Rename' : 'Renommer';
+    if (listDelete) listDelete.textContent = L === 'en' ? 'Delete' : 'Supprimer';
+    if (listSave) listSave.textContent = L === 'en' ? 'Save (from field)' : 'Enregistrer (depuis le champ)';
+    if (listLoad) listLoad.textContent = L === 'en' ? 'Load (to field)' : 'Charger (vers le champ)';
+    if (listInfos) listInfos.textContent = L === 'en' ? 'Fetch infos' : 'Récupérer infos';
+    const labelInfosTitle = document.getElementById('label-infos-title');
+    if (labelInfosTitle) labelInfosTitle.textContent = L === 'en' ? 'User infos (from /player)' : 'Infos utilisateurs (depuis /player)';
+
+    // Bouton submit et compteur
+    setSubmitting(false);
+    updateIdsCount();
+}
 
 // Soumettre les IDs à l'API
 document.getElementById('giftcode-form').addEventListener('submit', async function (e) {
