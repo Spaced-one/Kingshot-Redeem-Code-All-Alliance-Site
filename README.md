@@ -30,7 +30,7 @@ If you found this repo out of context: this tool automates, in your browser, app
 
 ## Quick start 🚀
 
-![Usage guide](...)
+<img width="2586" height="2817" alt="Usage guide" src="https://github.com/user-attachments/assets/e3bbe2ef-ea86-43fa-923a-f5c612a7e21a" />
 
 1) Download/clone the repo and open `index.html` in your browser.
 2) Select a list or create a new one, then load the IDs into the field.
