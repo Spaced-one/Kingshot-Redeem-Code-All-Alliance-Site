@@ -79,11 +79,201 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+
+        .section-card {
             background: var(--card);
-            padding: 22px;
+            padding: 24px;
             border-radius: 16px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-header-inline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), #22c55e);
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(99,102,241,.3);
+        }
+
+        .section-number-sm {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--primary), #22c55e);
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .section-hint {
+            margin: 4px 0 0 0;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 24px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .form-label-inline {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .field-info {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: linear-gradient(0deg, var(--bg) 0%, var(--card) 100%);
+            color: var(--text);
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
+            font-size: 14px;
+        }
+
+        .form-textarea {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99,102,241,.25);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .button-group-sm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .status-message {
+            min-height: 20px;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--bg);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .info-panel {
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            margin-top: 16px;
+        }
+
+        .info-panel-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .advanced-options {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin: 16px 0;
+        }
+
+        .advanced-options-summary {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text);
+            user-select: none;
+            list-style: none;
+        }
+
+        .advanced-options-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .advanced-options-content {
+            padding-top: 12px;
         }
 
         form label { font-weight: 600; font-size: 14px; }
@@ -105,17 +295,80 @@
         textarea:focus, input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,.25); }
 
         .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px 16px; border-radius: 12px; border: 1px solid transparent; cursor: pointer;
-            font-weight: 600; width: 100%; transition: transform .05s ease, filter .2s ease, background .2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform .05s ease, filter .2s ease, background .2s ease;
+            white-space: nowrap;
         }
+
         .btn:active { transform: translateY(1px); }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-600)); color: #fff; box-shadow: 0 8px 22px rgba(79,70,229,.35); }
-        .btn-primary:hover { filter: brightness(1.05); }
-        .btn-secondary { background: var(--bg); color: var(--text); border-color: var(--border); }
-        .btn-secondary:hover { background: var(--bg-soft); }
-        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
-        .btn-danger:hover { filter: brightness(1.05); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-600));
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(79,70,229,.35);
+        }
+        .btn-primary:hover:not(:disabled) { filter: brightness(1.05); }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(99,102,241,.1), rgba(56,189,248,.08));
+            color: var(--text);
+            border: 1px solid var(--primary);
+            border-color: rgba(99,102,241,.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+        .btn-secondary:hover:not(:disabled) { 
+            background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(56,189,248,.12));
+            border-color: rgba(99,102,241,.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            border: 1px solid #dc2626;
+        }
+        .btn-danger:hover:not(:disabled) { filter: brightness(1.05); }
+
+        .btn-large {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 16px;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(56,189,248,.1));
+            border: 1px solid rgba(99,102,241,.35);
+        }
+
+        .btn-sm.btn-secondary:hover:not(:disabled) {
+            background: linear-gradient(135deg, rgba(99,102,241,.18), rgba(56,189,248,.15));
+            border-color: rgba(99,102,241,.5);
+        }
+
+        .btn-sm.btn-danger {
+            background: linear-gradient(135deg, rgba(239,68,68,.15), rgba(220,38,38,.12));
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,.4);
+        }
+
+        .btn-sm.btn-danger:hover:not(:disabled) {
+            background: linear-gradient(135deg, rgba(239,68,68,.2), rgba(220,38,38,.18));
+            border-color: rgba(239,68,68,.6);
+            color: #dc2626;
+        }
 
         .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
 
@@ -164,49 +417,133 @@
 </div>
 
 <div class="container">
-    <form id="giftcode-form">
-        <label for="ids" id="label-ids">Liste des ID (un par ligne ou séparés par des virgules)</label>
-        <textarea id="ids" rows="8" placeholder="Exemple:\n123456789\n987654321\n1122334455"></textarea>
-        <div id="ids-count" class="muted">0 ID détecté</div>
-        <div class="mt-2 flex items-center gap-2">
-            <button type="button" id="clip-toggle" class="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-3 py-1.5 text-sm">Activer la capture du presse‑papiers</button>
-            <span id="clip-status" class="text-xs text-slate-500">Inactif</span>
-            <button type="button" id="paste-toggle" class="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-3 py-1.5 text-sm">Mode collage (sans permission)</button>
-            <span id="paste-status" class="text-xs text-slate-500">Off</span>
+    <!-- SECTION 1: Gestion des listes sauvegardées -->
+    <div class="section-card">
+        <div class="section-header">
+            <div class="section-number">1</div>
+            <div>
+                <h2 class="section-title" id="section-lists-title">Mes listes d'IDs</h2>
+                <p class="section-hint" id="section-lists-hint">Créez et gérez vos listes d'IDs pour les réutiliser facilement</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="list-select" id="lists-label" class="form-label">Liste active</label>
+            <select id="list-select" class="form-input"></select>
         </div>
 
-    <label for="giftcode" id="label-giftcode">Code cadeau</label>
-    <input type="text" id="giftcode" placeholder="Entrez le code cadeau ici...">
+        <div class="button-group">
+            <button type="button" id="list-load" class="btn btn-primary">
+                <span>📥</span>
+                <span id="btn-list-load-text">Charger dans le champ</span>
+            </button>
+            <button type="button" id="list-save" class="btn btn-secondary">
+                <span>💾</span>
+                <span id="btn-list-save-text">Sauvegarder le champ</span>
+            </button>
+        </div>
 
-        <button type="submit" id="submit-btn" class="btn btn-primary inline-flex items-center justify-center w-full gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"><span id="btn-text">Envoyer la requête</span></button>
-    </form>
+        <div class="button-group-sm">
+            <button type="button" id="list-new" class="btn-sm btn-secondary">
+                <span id="btn-list-new-text">+ Nouvelle</span>
+            </button>
+            <button type="button" id="list-rename" class="btn-sm btn-secondary">
+                <span id="btn-list-rename-text">✏️ Renommer</span>
+            </button>
+            <button type="button" id="list-delete" class="btn-sm btn-danger">
+                <span id="btn-list-delete-text">🗑️ Supprimer</span>
+            </button>
+            <button type="button" id="list-infos" class="btn-sm btn-secondary">
+                <span id="btn-list-infos-text">ℹ️ Infos joueurs</span>
+            </button>
+        </div>
 
-    <div class="message" id="message"></div>
-    <div class="row">
-        <button type="button" id="btn-save" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="saveIDs()">Sauvegarder les IDs</button>
-        <button type="button" id="btn-load" class="btn btn-secondary inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium px-4 py-2" onclick="loadIDs()">Charger les IDs</button>
-        <button type="button" id="btn-clear" class="btn btn-danger inline-flex items-center justify-center rounded-lg bg-red-600 hover:bg-red-500 text-white font-medium px-4 py-2" onclick="clearIDs()">Vider</button>
+        <div id="list-status" class="status-message"></div>
+
+        <div id="list-infos-view" class="hidden info-panel">
+            <div id="label-infos-title" class="info-panel-title">Infos utilisateurs</div>
+            <div id="infos" class="info-grid"></div>
+        </div>
     </div>
 
-        <div class="mt-4 grid gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
-            <div class="flex items-center gap-2">
-                <label for="list-select" id="lists-label" class="text-sm font-medium text-slate-800 dark:text-slate-200">Listes</label>
-                <select id="list-select" class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 p-2 text-sm"></select>
-                <button type="button" id="list-new" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Nouvelle</button>
-                <button type="button" id="list-rename" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Renommer</button>
-                <button type="button" id="list-delete" class="rounded-lg bg-red-600 hover:bg-red-500 text-white text-sm px-3 py-1.5">Supprimer</button>
-            </div>
-            <div class="flex items-center gap-2">
-                <button type="button" id="list-save" class="rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-3 py-1.5">Enregistrer (depuis le champ)</button>
-                <button type="button" id="list-load" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Charger (vers le champ)</button>
-                <button type="button" id="list-infos" class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm px-3 py-1.5">Récupérer infos</button>
-                <span id="list-status" class="text-xs text-slate-500"></span>
-            </div>
-            <div id="list-infos-view" class="hidden border-t border-slate-200 dark:border-slate-800 pt-3">
-                <div id="label-infos-title" class="text-xs text-slate-500 mb-2">Infos utilisateurs (depuis /player)</div>
-                <div id="infos" class="grid gap-2"></div>
+    <!-- SECTION 2: Saisie des IDs -->
+    <div class="section-card">
+        <div class="section-header">
+            <div class="section-number">2</div>
+            <div>
+                <h2 class="section-title" id="section-ids-title">Liste des IDs joueurs</h2>
+                <p class="section-hint" id="section-ids-hint">Collez les IDs (un par ligne, ou séparés par des virgules)</p>
             </div>
         </div>
+
+        <form id="giftcode-form">
+            <div class="form-group">
+                <label for="ids" id="label-ids" class="form-label">IDs à traiter</label>
+                <textarea id="ids" rows="8" class="form-textarea" placeholder="Exemple:\n123456789\n987654321\n1122334455"></textarea>
+                <div id="ids-count" class="field-info">0 ID détecté</div>
+            </div>
+
+            <div class="button-group-sm">
+                <button type="button" id="btn-clear" class="btn-sm btn-danger" onclick="clearIDs()">
+                    <span id="btn-clear-text">🗑️ Vider</span>
+                </button>
+            </div>
+
+            <!-- Options avancées (repliable) -->
+            <details class="advanced-options">
+                <summary class="advanced-options-summary" id="advanced-summary">⚙️ Options avancées (capture automatique)</summary>
+                <div class="advanced-options-content">
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-3" id="advanced-hint">
+                        Ces options permettent d'ajouter automatiquement des IDs copiés dans votre presse-papiers
+                    </p>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="clip-toggle" class="btn-sm btn-secondary flex-1">
+                                <span id="clip-toggle-text">📋 Capture presse-papiers</span>
+                            </button>
+                            <span id="clip-status" class="status-badge">Inactif</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="paste-toggle" class="btn-sm btn-secondary flex-1">
+                                <span id="paste-toggle-text">📎 Mode collage</span>
+                            </button>
+                            <span id="paste-status" class="status-badge">Off</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- SECTION 3: Code cadeau -->
+            <div class="section-divider"></div>
+            <div class="form-group">
+                <div class="section-header-inline">
+                    <div class="section-number-sm">3</div>
+                    <label for="giftcode" id="label-giftcode" class="form-label-inline">Code cadeau à appliquer</label>
+                </div>
+                <input type="text" id="giftcode" class="form-input" placeholder="Entrez le code cadeau ici...">
+                <p class="field-info" id="giftcode-hint">Le code sera appliqué à tous les IDs de la liste</p>
+            </div>
+
+            <!-- SECTION 4: Lancement -->
+            <div class="section-divider"></div>
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-large">
+                <span class="text-lg">🚀</span>
+                <span id="btn-text">Lancer l'application du code</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- SECTION 5: Résultats -->
+    <div class="section-card" id="results-section">
+        <div class="section-header">
+            <div class="section-number">4</div>
+            <div>
+                <h2 class="section-title" id="section-results-title">Résultats</h2>
+                <p class="section-hint" id="section-results-hint">Suivi en temps réel de l'application du code</p>
+            </div>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
 </div>
 
 <script>
@@ -352,7 +689,8 @@ async function pollClipboard() {
 function startClipboardCapture() {
     clipboard.enabled = true;
     const L = window.__i18nLang || 'fr';
-    clipToggleBtn.textContent = L === 'en' ? 'Disable capture' : 'Désactiver la capture';
+    const clipToggleText = document.getElementById('clip-toggle-text');
+    if (clipToggleText) clipToggleText.textContent = L === 'en' ? '📋 Disable clipboard' : '📋 Désactiver presse-papiers';
     clipStatus.textContent = L === 'en' ? 'Active' : 'Actif';
     setClipboardInterval(clipboard.intervalMs);
     // Gestion de visibilité/focus
@@ -364,7 +702,8 @@ function startClipboardCapture() {
 function stopClipboardCapture() {
     clipboard.enabled = false;
     const L = window.__i18nLang || 'fr';
-    clipToggleBtn.textContent = L === 'en' ? 'Enable clipboard capture' : 'Activer la capture du presse‑papiers';
+    const clipToggleText = document.getElementById('clip-toggle-text');
+    if (clipToggleText) clipToggleText.textContent = L === 'en' ? '📋 Enable clipboard' : '📋 Activer presse-papiers';
     clipStatus.textContent = L === 'en' ? 'Inactive' : 'Inactif';
     if (clipboard.timer) { clearInterval(clipboard.timer); clipboard.timer = null; }
     if (clipboard.focusBoostTimer) { clearTimeout(clipboard.focusBoostTimer); clipboard.focusBoostTimer = null; }
@@ -449,7 +788,8 @@ function startPasteCapture() {
     pasteCapture.enabled = true;
     window.addEventListener('paste', onPaste);
     const L = window.__i18nLang || 'fr';
-    pasteToggleBtn.textContent = L === 'en' ? 'Disable paste mode' : 'Désactiver collage';
+    const pasteToggleText = document.getElementById('paste-toggle-text');
+    if (pasteToggleText) pasteToggleText.textContent = L === 'en' ? '📎 Disable paste mode' : '📎 Désactiver collage';
     pasteStatus.textContent = L === 'en' ? 'On' : 'On';
 }
 
@@ -458,7 +798,8 @@ function stopPasteCapture() {
     pasteCapture.enabled = false;
     window.removeEventListener('paste', onPaste);
     const L = window.__i18nLang || 'fr';
-    pasteToggleBtn.textContent = L === 'en' ? 'Paste mode (no permission)' : 'Mode collage (sans permission)';
+    const pasteToggleText = document.getElementById('paste-toggle-text');
+    if (pasteToggleText) pasteToggleText.textContent = L === 'en' ? '📎 Paste mode' : '📎 Mode collage';
     pasteStatus.textContent = L === 'en' ? 'Off' : 'Off';
 }
 
@@ -480,8 +821,8 @@ function setSubmitting(isSubmitting) {
     submitBtn.disabled = isSubmitting;
     const L = window.__i18nLang || 'fr';
     btnText.textContent = isSubmitting
-        ? (L === 'en' ? 'Sending…' : 'Envoi en cours…')
-        : (L === 'en' ? 'Send request' : 'Envoyer la requête');
+        ? (L === 'en' ? 'Processing…' : 'Traitement en cours…')
+        : (L === 'en' ? 'Launch code application' : 'Lancer l\'application du code');
 }
 
 // Thème (clair/sombre)
@@ -526,6 +867,7 @@ function initI18n() {
 
 function applyI18n() {
     const L = window.__i18nLang || 'fr';
+    
     // En-tête
     if (appTitle) appTitle.textContent = L === 'en' ? 'Gift code tool' : 'Codes cadeaux';
     if (subtitle) subtitle.textContent = L === 'en'
@@ -533,50 +875,88 @@ function applyI18n() {
         : 'Collez vos IDs (un par ligne) et appliquez un code cadeau à la volée.';
     if (themeLabel) themeLabel.textContent = L === 'en' ? 'Theme' : 'Thème';
 
-    // Champs
-    if (labelIds) labelIds.textContent = L === 'en'
-        ? 'ID list (one per line or separated by commas)'
-        : 'Liste des ID (un par ligne ou séparés par des virgules)';
-    if (labelGift) labelGift.textContent = L === 'en' ? 'Gift code' : 'Code cadeau';
-    const giftInput = document.getElementById('giftcode');
-    if (giftInput) giftInput.placeholder = L === 'en' ? 'Enter the gift code here...' : 'Entrez le code cadeau ici...';
+    // Section 1: Listes
+    const sectionListsTitle = document.getElementById('section-lists-title');
+    const sectionListsHint = document.getElementById('section-lists-hint');
+    if (sectionListsTitle) sectionListsTitle.textContent = L === 'en' ? 'My ID lists' : 'Mes listes d\'IDs';
+    if (sectionListsHint) sectionListsHint.textContent = L === 'en' 
+        ? 'Create and manage your ID lists for easy reuse'
+        : 'Créez et gérez vos listes d\'IDs pour les réutiliser facilement';
 
-    // Boutons clipboard
-    if (clipToggleBtn) clipToggleBtn.textContent = clipboard.enabled
-        ? (L === 'en' ? 'Disable capture' : 'Désactiver la capture')
-        : (L === 'en' ? 'Enable clipboard capture' : 'Activer la capture du presse‑papiers');
+    const listsLabel = document.getElementById('lists-label');
+    if (listsLabel) listsLabel.textContent = L === 'en' ? 'Active list' : 'Liste active';
+
+    const btnListLoad = document.getElementById('btn-list-load-text');
+    const btnListSave = document.getElementById('btn-list-save-text');
+    const btnListNew = document.getElementById('btn-list-new-text');
+    const btnListRename = document.getElementById('btn-list-rename-text');
+    const btnListDelete = document.getElementById('btn-list-delete-text');
+    const btnListInfos = document.getElementById('btn-list-infos-text');
+    
+    if (btnListLoad) btnListLoad.textContent = L === 'en' ? 'Load to field' : 'Charger dans le champ';
+    if (btnListSave) btnListSave.textContent = L === 'en' ? 'Save field' : 'Sauvegarder le champ';
+    if (btnListNew) btnListNew.textContent = L === 'en' ? '+ New' : '+ Nouvelle';
+    if (btnListRename) btnListRename.textContent = L === 'en' ? '✏️ Rename' : '✏️ Renommer';
+    if (btnListDelete) btnListDelete.textContent = L === 'en' ? '🗑️ Delete' : '🗑️ Supprimer';
+    if (btnListInfos) btnListInfos.textContent = L === 'en' ? 'ℹ️ Player infos' : 'ℹ️ Infos joueurs';
+
+    const labelInfosTitle = document.getElementById('label-infos-title');
+    if (labelInfosTitle) labelInfosTitle.textContent = L === 'en' ? 'User infos' : 'Infos utilisateurs';
+
+    // Section 2: IDs
+    const sectionIdsTitle = document.getElementById('section-ids-title');
+    const sectionIdsHint = document.getElementById('section-ids-hint');
+    if (sectionIdsTitle) sectionIdsTitle.textContent = L === 'en' ? 'Player IDs list' : 'Liste des IDs joueurs';
+    if (sectionIdsHint) sectionIdsHint.textContent = L === 'en'
+        ? 'Paste IDs (one per line, or separated by commas)'
+        : 'Collez les IDs (un par ligne, ou séparés par des virgules)';
+
+    if (labelIds) labelIds.textContent = L === 'en' ? 'IDs to process' : 'IDs à traiter';
+    const btnClearText = document.getElementById('btn-clear-text');
+    if (btnClearText) btnClearText.textContent = L === 'en' ? '🗑️ Clear' : '🗑️ Vider';
+
+    // Options avancées
+    const advancedSummary = document.getElementById('advanced-summary');
+    const advancedHint = document.getElementById('advanced-hint');
+    if (advancedSummary) advancedSummary.textContent = L === 'en' 
+        ? '⚙️ Advanced options (auto-capture)'
+        : '⚙️ Options avancées (capture automatique)';
+    if (advancedHint) advancedHint.textContent = L === 'en'
+        ? 'These options allow automatic addition of IDs copied to your clipboard'
+        : 'Ces options permettent d\'ajouter automatiquement des IDs copiés dans votre presse-papiers';
+
+    const clipToggleText = document.getElementById('clip-toggle-text');
+    const pasteToggleText = document.getElementById('paste-toggle-text');
+    if (clipToggleText) clipToggleText.textContent = clipboard.enabled
+        ? (L === 'en' ? '📋 Disable clipboard' : '📋 Désactiver presse-papiers')
+        : (L === 'en' ? '📋 Enable clipboard' : '📋 Activer presse-papiers');
+    if (pasteToggleText) pasteToggleText.textContent = pasteCapture.enabled
+        ? (L === 'en' ? '📎 Disable paste mode' : '📎 Désactiver collage')
+        : (L === 'en' ? '📎 Paste mode' : '📎 Mode collage');
+
     if (clipStatus) clipStatus.textContent = clipboard.enabled
         ? (L === 'en' ? 'Active' : 'Actif')
         : (L === 'en' ? 'Inactive' : 'Inactif');
-    if (pasteToggleBtn) pasteToggleBtn.textContent = pasteCapture.enabled
-        ? (L === 'en' ? 'Disable paste mode' : 'Désactiver collage')
-        : (L === 'en' ? 'Paste mode (no permission)' : 'Mode collage (sans permission)');
-    if (pasteStatus) pasteStatus.textContent = pasteCapture.enabled ? (L === 'en' ? 'On' : 'On') : (L === 'en' ? 'Off' : 'Off');
+    if (pasteStatus) pasteStatus.textContent = pasteCapture.enabled 
+        ? (L === 'en' ? 'On' : 'On') 
+        : (L === 'en' ? 'Off' : 'Off');
 
-    // Boutons principaux
-    const btnSave = document.getElementById('btn-save');
-    const btnLoad = document.getElementById('btn-load');
-    const btnClear = document.getElementById('btn-clear');
-    if (btnSave) btnSave.textContent = L === 'en' ? 'Save IDs' : 'Sauvegarder les IDs';
-    if (btnLoad) btnLoad.textContent = L === 'en' ? 'Load IDs' : 'Charger les IDs';
-    if (btnClear) btnClear.textContent = L === 'en' ? 'Clear' : 'Vider';
+    // Section 3: Code cadeau
+    if (labelGift) labelGift.textContent = L === 'en' ? 'Gift code to apply' : 'Code cadeau à appliquer';
+    const giftInput = document.getElementById('giftcode');
+    if (giftInput) giftInput.placeholder = L === 'en' ? 'Enter the gift code here...' : 'Entrez le code cadeau ici...';
+    const giftcodeHint = document.getElementById('giftcode-hint');
+    if (giftcodeHint) giftcodeHint.textContent = L === 'en'
+        ? 'The code will be applied to all IDs in the list'
+        : 'Le code sera appliqué à tous les IDs de la liste';
 
-    const listsLabel = document.getElementById('lists-label');
-    if (listsLabel) listsLabel.textContent = L === 'en' ? 'Lists' : 'Listes';
-    const listNew = document.getElementById('list-new');
-    const listRename = document.getElementById('list-rename');
-    const listDelete = document.getElementById('list-delete');
-    const listSave = document.getElementById('list-save');
-    const listLoad = document.getElementById('list-load');
-    const listInfos = document.getElementById('list-infos');
-    if (listNew) listNew.textContent = L === 'en' ? 'New' : 'Nouvelle';
-    if (listRename) listRename.textContent = L === 'en' ? 'Rename' : 'Renommer';
-    if (listDelete) listDelete.textContent = L === 'en' ? 'Delete' : 'Supprimer';
-    if (listSave) listSave.textContent = L === 'en' ? 'Save (from field)' : 'Enregistrer (depuis le champ)';
-    if (listLoad) listLoad.textContent = L === 'en' ? 'Load (to field)' : 'Charger (vers le champ)';
-    if (listInfos) listInfos.textContent = L === 'en' ? 'Fetch infos' : 'Récupérer infos';
-    const labelInfosTitle = document.getElementById('label-infos-title');
-    if (labelInfosTitle) labelInfosTitle.textContent = L === 'en' ? 'User infos (from /player)' : 'Infos utilisateurs (depuis /player)';
+    // Section 4: Bouton submit
+    const sectionResultsTitle = document.getElementById('section-results-title');
+    const sectionResultsHint = document.getElementById('section-results-hint');
+    if (sectionResultsTitle) sectionResultsTitle.textContent = L === 'en' ? 'Results' : 'Résultats';
+    if (sectionResultsHint) sectionResultsHint.textContent = L === 'en'
+        ? 'Real-time tracking of code application'
+        : 'Suivi en temps réel de l\'application du code';
 
     // Bouton submit et compteur
     setSubmitting(false);
