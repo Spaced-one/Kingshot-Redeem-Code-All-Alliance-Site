@@ -1,6 +1,6 @@
 # Kingshot Redeem Code – Outil d’envoi de codes cadeau par lots ✨
 
-> Langue: Français (auto) · English version: [README.en.md](./README.en.md)
+> Langue: Français (auto) · English version: [README.en.md](./README.md)
 
 > Site en ligne: https://spaced-one.github.io/Kingshot-Redeem-Code-All-Alliance-Site/
 
