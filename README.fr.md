@@ -20,8 +20,8 @@ Si vous tombez sur ce repo sans contexte: cet outil sert à automatiser, côté 
 - Se connecte à chaque ID (endpoint `/player`) puis appelle le redeem (`/gift_code`).
 - Traite les IDs en séquence, avec des pauses et des retries pour éviter les limites.
 - Affiche un résumé clair: succès, déjà reçu, codes invalides, échecs.
-- Gère des listes locales (créer/renommer/supprimer/enregistrer/charger), avec récupération d’infos joueur.
-- Inclus par défaut 2 listes d’exemple: « Alliance FARM » et « APX Alliance » (stockées localement si aucune liste n’existe encore).
+- Gère des listes locales (créer/renommer/supprimer/enregistrer/charger), avec récupération d'infos joueur.
+- Inclus par défaut 1 liste d'exemple: « BR2 Alliance » (stockée localement si aucune liste n'existe encore).
 
 ## Prérequis ✅
 - Un navigateur moderne (Chrome, Edge, Firefox, Safari).
@@ -29,10 +29,13 @@ Si vous tombez sur ce repo sans contexte: cet outil sert à automatiser, côté 
 - Une liste d’IDs numériques (copiée depuis vos sources habituelles).
 
 ## Démarrage rapide 🚀
+
+![Guide d'utilisation](...)
+
 1) Téléchargez/clonez le dépôt, puis ouvrez `index.html` dans votre navigateur.
-2) Collez vos IDs dans le champ (un par ligne ou séparés par des virgules/;).
-3) Saisissez le code cadeau.
-4) Cliquez « Envoyer la requête ». Le script va:
+2) Sélectionnez une liste ou créez-en une nouvelle, puis chargez les IDs dans le champ.
+3) Saisissez le code cadeau à appliquer.
+4) Cliquez sur « Lancer l'application du code ». Le script va:
    - Attendre 1 seconde, se connecter à l’ID (`/player`) avec signature.
    - Attendre à nouveau 1 seconde, tenter le redeem (`/gift_code`).
   - En cas de 429, attendre 11 secondes puis réessayer (nombre de tentatives limité).

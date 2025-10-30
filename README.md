@@ -19,9 +19,9 @@ If you found this repo out of context: this tool automates, in your browser, app
 - Paste and clean ID lists (lines/commas/semicolons, de‑dup).
 - Login for each ID (`/player`) then redeem (`/gift_code`).
 - Sequential processing with cooldowns and retries to respect limits.
-- Clear summary: success, already received, invalid codes, failures.
-- Local lists (create/rename/delete/save/load) with player info retrieval.
-- Ships with two example lists by default: “Alliance FARM” and “APX Alliance” (saved locally if none exist yet).
+- Affiche un résumé clair: succès, déjà reçu, codes invalides, échecs.
+- Gère des listes locales (créer/renommer/supprimer/enregistrer/charger), avec récupération d'infos joueur.
+- Inclus par défaut 1 liste d'exemple: « BR2 Alliance » (stockée localement si aucune liste n'existe encore).
 
 ## Requirements ✅
 - A modern browser (Chrome, Edge, Firefox, Safari).
@@ -29,10 +29,13 @@ If you found this repo out of context: this tool automates, in your browser, app
 - A list of numeric player IDs.
 
 ## Quick start 🚀
+
+![Usage guide](...)
+
 1) Download/clone the repo and open `index.html` in your browser.
-2) Paste your IDs (one per line or separated by commas/;).
-3) Enter the gift code.
-4) Click “Send request”. The script will:
+2) Select a list or create a new one, then load the IDs into the field.
+3) Enter the gift code to apply.
+4) Click "Launch code application". The script will:
    - Wait 1 second, call login (`/player`) with signature.
    - Wait another 1 second, call redeem (`/gift_code`).
    - On 429, wait 11 seconds and retry (limited attempts).
