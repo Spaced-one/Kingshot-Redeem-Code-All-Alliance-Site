@@ -893,7 +893,7 @@ function initI18n() {
 }
 
 function applyI18n() {
-    const L = 'en' || window.__i18nLang || 'fr';
+    const L = window.__i18nLang || 'fr';
     
     // En-tête
     if (appTitle) appTitle.textContent = L === 'en' ? 'Gift code tool' : 'Codes cadeaux';
