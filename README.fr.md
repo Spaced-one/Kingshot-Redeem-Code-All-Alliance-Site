@@ -30,7 +30,7 @@ Si vous tombez sur ce repo sans contexte: cet outil sert à automatiser, côté 
 
 ## Démarrage rapide 🚀
 
-![Guide d'utilisation](...)
+<img width="2594" height="2885" alt="Guide d'utilisation" src="https://github.com/user-attachments/assets/55c0f1e1-e2db-4086-8546-767a164a3c16" />
 
 1) Téléchargez/clonez le dépôt, puis ouvrez `index.html` dans votre navigateur.
 2) Sélectionnez une liste ou créez-en une nouvelle, puis chargez les IDs dans le champ.
