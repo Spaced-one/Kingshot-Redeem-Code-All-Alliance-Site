@@ -1051,7 +1051,8 @@ document.getElementById('giftcode-form').addEventListener('submit', async functi
             failed++;
             const connectMsg = (connectJson && (connectJson.message || connectJson.msg)) || (connectErr && connectErr.message) || '';
             const connectPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300">Connexion</span>`;
-            linesArr.push(`<div class="text-sm">${connectPill} — ID ${id}${connectMsg ? ` · ${connectMsg}` : ''}</div>`);
+            const displayName = (connectJson && connectJson.data && connectJson.data.nickname) || id;
+            linesArr.push(`<div class="text-sm">${connectPill} — ${displayName}${connectMsg ? ` · ${connectMsg}` : ''}</div>`);
             renderProgress();
             // petit délai entre IDs pour éviter burst
             await sleep(300);
@@ -1086,7 +1087,8 @@ document.getElementById('giftcode-form').addEventListener('submit', async functi
         if (status === 'already') redeemPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Déjà reçu</span>`;
         if (status === 'invalid') redeemPill = `<span class="inline-block text-[10px] px-1.5 py-0.5 rounded-full border border-slate-300 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-800/40 dark:text-slate-300">Code invalide</span>`;
         const redeemMsg = (redeemJson && (redeemJson.message || redeemJson.msg)) || (redeemErr && redeemErr.message) || '';
-        linesArr.push(`<div class="text-sm">${connectPill} ${redeemPill} — ID ${id}${redeemMsg ? ` · ${redeemMsg}` : ''}</div>`);
+        const displayName = (connectJson && connectJson.data && connectJson.data.nickname) || id;
+        linesArr.push(`<div class="text-sm">${connectPill} ${redeemPill} — ${displayName}${redeemMsg ? ` · ${redeemMsg}` : ''}</div>`);
         renderProgress();
 
         // Arrêt global si le code est invalide/erroné
